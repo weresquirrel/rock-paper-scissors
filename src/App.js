@@ -70,10 +70,36 @@ function App() {
           Player's choice 
           - until restart all buttons should be disabled
           - selected button should stay visually selected
+          -- focuse vs special className ?
+
+          - not sure if id was the right choice
         */}
-        <button id='rock' onClick={runGame}>rock</button>
-        <button id='paper' onClick={runGame}>paper</button>
-        <button id='scissors' onClick={runGame}>scissors</button>
+        <button 
+          id='rock' 
+          disabled={isGameRunning} 
+          onClick={runGame}
+          className={playersChoice === 'rock'? 'selected' : null}
+        >
+          rock
+        </button>
+
+        <button 
+          id='paper' 
+          disabled={isGameRunning} 
+          onClick={runGame}
+          className={playersChoice === 'paper'? 'selected' : null}
+        >
+          paper
+        </button>
+
+        <button 
+          id='scissors' 
+          disabled={isGameRunning} 
+          onClick={runGame}
+          className={playersChoice === 'scissors'? 'selected' : null}
+        >
+          scissors
+        </button>
 
         {/* Outcome info + restart */}
           {isGameRunning ? 
