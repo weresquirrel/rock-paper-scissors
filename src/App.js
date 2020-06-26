@@ -2,18 +2,52 @@ import React, {useState} from 'react';
 import './App.css';
 
 function App() {
+  // should break the whole thing to Components
+  const basicOptions = ['rock', 'paper', 'scissors']
+
   const [isGameRunning, setIsGameRunning] = useState(false)
   const [outcome, setOutcome] = useState('')
   const [computersChoice, setComputersChoice] = useState('')
+  const [playersChoice, setPlayersChoice] = useState('')
 
-  function runGame() {
-    setComputersChoice('rock')
-    setOutcome('win')
+  function pickRandomChoice(options) {
+    return options[Math.floor(Math.random() * 3)]
+  }
+
+  function decideOutcome(player, computer) {
+
+    console.log(player, computer)
+
+    if(player === computer) {
+      return 'draw'
+    } else if (
+        (player === 'rock' && computer === 'paper') ||
+        (player === 'paper' && computer === 'scissors') ||
+        (player === 'scissors' && computer === 'rock')
+      ) {
+      return 'lose'
+    } else {
+      return 'win'
+    }
+
+  }
+
+  function runGame(e) {
+    const player = e.target.id
+    const computer = pickRandomChoice(basicOptions)
+    const result = decideOutcome(player, computer)
+
+    setPlayersChoice(player)
+    setComputersChoice(computer)
+    setOutcome(result)
+
     setIsGameRunning(true) 
   }
 
   function newGame() {
     setComputersChoice('')
+    setPlayersChoice('')
+    setOutcome('')
     setIsGameRunning(false)
   }
 
@@ -32,10 +66,14 @@ function App() {
           
         </div>
 
-        {/* Player's choice */}
-        <button onClick={runGame}>rock</button>
-        <button onClick={runGame}>paper</button>
-        <button onClick={runGame}>scissors</button>
+        {/* 
+          Player's choice 
+          - until restart all buttons should be disabled
+          - selected button should stay visually selected
+        */}
+        <button id='rock' onClick={runGame}>rock</button>
+        <button id='paper' onClick={runGame}>paper</button>
+        <button id='scissors' onClick={runGame}>scissors</button>
 
         {/* Outcome info + restart */}
           {isGameRunning ? 
