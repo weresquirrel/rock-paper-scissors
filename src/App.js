@@ -3,38 +3,62 @@ import './App.css';
 
 function App() {
   // should break the whole thing to Components
-  const basicOptions = ['rock', 'paper', 'scissors']
+  // const basicOptions = ['rock', 'paper', 'scissors']
+
+  const Signs = {
+    ROCK: 'rock',
+    PAPER: 'paper',
+    SCISSORS: 'scissors'
+  }
+// No idea how will this Signs thing handle 'lizard' and 'Spock' later
+// Will be another enum for that?
+// and why must Sings start with a capital - so strange?
+
+  const Outcomes = {
+    WIN: 'win',
+    LOSE: 'lose',
+    DRAW: 'draw'
+  }
+
 
   const [isGameRunning, setIsGameRunning] = useState(false)
   const [outcome, setOutcome] = useState('')
   const [computersChoice, setComputersChoice] = useState('')
   const [playersChoice, setPlayersChoice] = useState('')
 
+  // function pickRandomChoiceOLD(options) {
+  //   return options[Math.floor(Math.random() * 3)]
+  // }
+
+  // I don't know how this supposed to work with the enum,
+  // honestly just seems more complicated than it was with the array
+  //  I wanted to change the hardcoded 3 to options.length before -
+  //  Now it doesn't make any sense, I have no idea how we wannt to handle these keyes later
   function pickRandomChoice(options) {
-    return options[Math.floor(Math.random() * 3)]
+    const keys = Object.keys(options)
+    return options[keys[Math.floor(Math.random() * 3)]]
   }
 
   function decideOutcome(player, computer) {
-
     console.log(player, computer)
 
     if(player === computer) {
-      return 'draw'
+      return Outcomes.DRAW
     } else if (
-        (player === 'rock' && computer === 'paper') ||
-        (player === 'paper' && computer === 'scissors') ||
-        (player === 'scissors' && computer === 'rock')
+        (player === Signs.ROCK && computer === Signs.PAPER) ||
+        (player === Signs.PAPER && computer === Signs.SCISSORS) ||
+        (player === Signs.SCISSORS && computer === Signs.ROCK)
       ) {
-      return 'lose'
+      return Outcomes.LOSE
     } else {
-      return 'win'
+      return Outcomes.WIN
     }
 
   }
 
   function runGame(e) {
     const player = e.target.id
-    const computer = pickRandomChoice(basicOptions)
+    const computer = pickRandomChoice(Signs)
     const result = decideOutcome(player, computer)
 
     setPlayersChoice(player)
@@ -78,6 +102,7 @@ function App() {
           id='rock' 
           disabled={isGameRunning} 
           onClick={runGame}
+          // onClick={() => runGame('rock')}
           className={playersChoice === 'rock'? 'selected' : null}
         >
           rock
