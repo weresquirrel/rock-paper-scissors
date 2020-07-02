@@ -72,10 +72,10 @@ function Game() {
       </div>
 
       {/* Player's choice */}
-      {Object.keys(Signs).map(singKey => 
+      {Object.keys(Signs).map(signKey => 
         <Option
-          key={`option-${singKey}`} 
-          sign={Signs[singKey]} 
+          key={`option-${signKey}`} 
+          sign={Signs[signKey]} 
           onActivate={runGame} 
           isActivatable={isGameRunning} 
           activatedChoice={playersChoice}
