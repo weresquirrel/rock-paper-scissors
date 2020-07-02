@@ -41,8 +41,7 @@ function Game() {
     }
   }
 
-  function runGame(sign) {
-    const player = sign
+  function runGame(player) {
     const computer = pickRandomChoice(Signs)
     const result = decideOutcome(player, computer)
 
