@@ -20,6 +20,9 @@ function Game() {
   const [computersChoice, setComputersChoice] = useState('')
   const [playersChoice, setPlayersChoice] = useState('')
 
+  const initialStatistics = {win: 0, lose: 0, draw: 0, total: 0}
+  const [statistics, setStatistics] = useState(initialStatistics)
+
   function pickRandomChoice(options) {
     const keys = Object.keys(options)
     return options[keys[Math.floor(Math.random() * 3)]]
@@ -48,6 +51,14 @@ function Game() {
     setPlayersChoice(player)
     setComputersChoice(computer)
     setOutcome(result)
+
+    setStatistics(prev => {
+      return {
+        ...prev, 
+        [result]: prev[result] + 1, 
+        total: prev.total + 1
+      }
+    })
 
     setIsGameRunning(true) 
   }
@@ -82,13 +93,24 @@ function Game() {
       )}
 
       {/* Outcome info + restart */}
-        {isGameRunning ? 
-          <div> 
-            <p>{outcome}</p>
-            <button onClick={newGame}>Play again</button>
-          </div> : 
-          null
-        }
+      {isGameRunning ? 
+        <div> 
+          <p>{outcome}</p>
+          <button onClick={newGame}>Play again</button>
+        </div> : 
+        null
+      }
+
+      {/* statistics */}
+      <div>
+        <h3>Statistics</h3>
+        <p>win: {statistics.win}</p>
+        <p>lose: {statistics.lose}</p>
+        <p>draw: {statistics.draw}</p>
+        <br/>
+        <p>total: {statistics.total}</p>
+      </div>
+
     </div>
   )
 }
