@@ -6,3 +6,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+button {
+  margin: 0.5em;
+  padding: 1em;
+}
+
+.selected {
+  border: 2px solid red;
+}
