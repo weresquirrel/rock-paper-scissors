@@ -20,8 +20,9 @@ function Game() {
   const [computersChoice, setComputersChoice] = useState('')
   const [playersChoice, setPlayersChoice] = useState('')
 
-  const initialStatistics = {win: 0, lose: 0, draw: 0, total: 0}
+  const initialStatistics = {[Outcomes.WIN]: 0, [Outcomes.LOSE]: 0, [Outcomes.DRAW]: 0}
   const [statistics, setStatistics] = useState(initialStatistics)
+  const total = statistics[Outcomes.WIN] + statistics[Outcomes.LOSE] + statistics[Outcomes.DRAW]
 
   function pickRandomChoice(options) {
     const keys = Object.keys(options)
@@ -29,7 +30,7 @@ function Game() {
   }
 
   function decideOutcome(player, computer) {
-    console.log(player, computer)
+    // console.log(player, computer)
 
     if(player === computer) {
       return Outcomes.DRAW
@@ -52,13 +53,10 @@ function Game() {
     setComputersChoice(computer)
     setOutcome(result)
 
-    setStatistics(prev => {
-      return {
-        ...prev, 
-        [result]: prev[result] + 1, 
-        total: prev.total + 1
-      }
-    })
+    setStatistics((prev) => ({
+      ...prev,
+      [result]: prev[result] + 1
+    }))
 
     setIsGameRunning(true) 
   }
@@ -104,11 +102,11 @@ function Game() {
       {/* statistics */}
       <div>
         <h3>Statistics</h3>
-        <p>win: {statistics.win}</p>
-        <p>lose: {statistics.lose}</p>
-        <p>draw: {statistics.draw}</p>
+        <p>win: {statistics[Outcomes.WIN]}</p>
+        <p>lose: {statistics[Outcomes.LOSE]}</p>
+        <p>draw: {statistics[Outcomes.DRAW]}</p>
         <br/>
-        <p>total: {statistics.total}</p>
+        <p>total: {total}</p>
       </div>
 
     </div>
