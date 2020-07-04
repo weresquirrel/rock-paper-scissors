@@ -1,4 +1,8 @@
 import React, {useState} from 'react'
+import {Button} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import Grid from '@material-ui/core/Grid'
 
 import Option from './Option'
 
@@ -68,46 +72,85 @@ function Game() {
     setIsGameRunning(false)
   }
 
+  // --------------------------------------------
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
+    },
+    container: {
+      display: 'grid',
+      gridTemplateColumns: 'repeat(12, 1fr)',
+      gridTemplateRows: 'repeat(3, 1fr)',
+      gridGap: theme.spacing(3),
+
+      margin: '2em',
+    },
+    paper: {
+      padding: theme.spacing(2),
+      textAlign: 'center',
+      color: theme.palette.text.secondary,
+    },
+  }))
+  // --------------------------------------------
+  const classes = useStyles();
   return (
-    <div>
-      {/* Computer's choice */}
-      <div>
-        <p>Computer's choice:</p>
-        <p>
-          {computersChoice ? computersChoice : '???'}
-        </p>
-        
-      </div>
+    <div className={classes.container}>
 
-      {/* Player's choice */}
-      {Object.keys(Signs).map(signKey => 
-        <Option
-          key={`option-${signKey}`} 
-          sign={Signs[signKey]} 
-          onActivate={runGame} 
-          isActivatable={isGameRunning} 
-          activatedChoice={playersChoice}
-        />
-      )}
 
-      {/* Outcome info + restart */}
-      {isGameRunning ? 
-        <div> 
-          <p>{outcome}</p>
-          <button onClick={newGame}>Play again</button>
-        </div> : 
-        null
-      }
 
-      {/* statistics */}
-      <div>
-        <h3>Statistics</h3>
-        <p>win: {statistics[Outcomes.WIN]}</p>
-        <p>lose: {statistics[Outcomes.LOSE]}</p>
-        <p>draw: {statistics[Outcomes.DRAW]}</p>
-        <br/>
-        <p>total: {total}</p>
-      </div>
+        {/* Computer's choice */}
+        <div style={{ gridColumnEnd: '11', gridColumnStart: '3'}}>
+          <Paper className={classes.paper}>
+            <p>Computer's choice:</p>
+            <p>
+              {computersChoice ? computersChoice : '???'}
+            </p>
+          </Paper>
+        </div>
+
+        {/* statistics */}
+        <div style={{ gridColumnEnd: 'span 2',  gridColumnStart: '11', gridRow: 'span 2'  }}>
+          <Paper className={classes.paper}>
+            <h3>Statistics</h3>
+            <p>win: {statistics[Outcomes.WIN]}</p>
+            <p>lose: {statistics[Outcomes.LOSE]}</p>
+            <p>draw: {statistics[Outcomes.DRAW]}</p>
+            <br/>
+            <p>total: {total}</p>
+          </Paper>
+        </div>  
+
+        {/* Player's choice */}
+        <div style={{ gridColumnEnd: '11', gridColumnStart: '3'}}>
+          <Paper className={classes.paper}>
+            <Button className='special' variant="contained" size='large' >Hello World</Button>
+
+            {Object.keys(Signs).map(signKey => 
+              <Option
+                key={`option-${signKey}`} 
+                sign={Signs[signKey]} 
+                onActivate={runGame} 
+                isActivatable={isGameRunning} 
+                activatedChoice={playersChoice}
+              />
+            )}
+          </Paper>
+        </div>
+
+        {/* Outcome info + restart */}
+        <div style={{ gridColumnEnd: 'span 12' }}>
+          <Paper className={classes.paper}>
+            {isGameRunning ? 
+              <div> 
+                <p>{outcome}</p>
+                <button onClick={newGame}>Play again</button>
+              </div> : 
+              null
+            }
+          </Paper>
+        </div>
+
+
 
     </div>
   )
