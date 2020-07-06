@@ -20,8 +20,17 @@ function Game() {
   const [computersChoice, setComputersChoice] = useState('')
   const [playersChoice, setPlayersChoice] = useState('')
 
-  const initialStatistics = {[Outcomes.WIN]: 0, [Outcomes.LOSE]: 0, [Outcomes.DRAW]: 0}
-  const [statistics, setStatistics] = useState(initialStatistics)
+  // Reach Info
+  localStorage.setItem(Outcomes.WIN, (localStorage.getItem(Outcomes.WIN) || 0))
+  localStorage.setItem(Outcomes.LOSE, (localStorage.getItem(Outcomes.LOSE) || 0))
+  localStorage.setItem(Outcomes.DRAW, (localStorage.getItem(Outcomes.DRAW) || 0))
+
+  // Get Info
+  const statistics = {
+    [Outcomes.WIN]: parseInt(localStorage.getItem(Outcomes.WIN)), 
+    [Outcomes.LOSE]: parseInt(localStorage.getItem(Outcomes.LOSE)), 
+    [Outcomes.DRAW]: parseInt(localStorage.getItem(Outcomes.DRAW))
+  }
   const total = statistics[Outcomes.WIN] + statistics[Outcomes.LOSE] + statistics[Outcomes.DRAW]
 
   function pickRandomChoice(options) {
@@ -53,10 +62,7 @@ function Game() {
     setComputersChoice(computer)
     setOutcome(result)
 
-    setStatistics((prev) => ({
-      ...prev,
-      [result]: prev[result] + 1
-    }))
+    localStorage.setItem(result, statistics[result] + 1)
 
     setIsGameRunning(true) 
   }
@@ -102,9 +108,9 @@ function Game() {
       {/* statistics */}
       <div>
         <h3>Statistics</h3>
-        <p>win: {statistics[Outcomes.WIN]}</p>
-        <p>lose: {statistics[Outcomes.LOSE]}</p>
-        <p>draw: {statistics[Outcomes.DRAW]}</p>
+        <p>won: {statistics[Outcomes.WIN]}</p>
+        <p>lost: {statistics[Outcomes.LOSE]}</p>
+        <p>"meh": {statistics[Outcomes.DRAW]}</p>
         <br/>
         <p>total: {total}</p>
       </div>
