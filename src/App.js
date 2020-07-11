@@ -10,10 +10,10 @@ function App() {
         <h1>o — x</h1>
       </header>
       <main>
-       <Game />  
+        <Game />
       </main>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
