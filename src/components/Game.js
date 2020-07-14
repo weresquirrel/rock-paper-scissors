@@ -19,9 +19,7 @@ function Game() {
   const [outcome, setOutcome] = useState('')
   const [computersChoice, setComputersChoice] = useState('')
   const [playersChoice, setPlayersChoice] = useState('')
-  const [statistics, setStatistics] = useState({})
-
-  useEffect(() => {
+  const [statistics, setStatistics] = useState(()=> {
     const initialStatistics = {
       [Outcomes.WIN]: 0, 
       [Outcomes.LOSE]: 0, 
@@ -29,8 +27,8 @@ function Game() {
     }
     const storedStatistics = JSON.parse(localStorage.getItem('statistics'))
 
-    setStatistics(storedStatistics || initialStatistics)
-  }, [])
+    return storedStatistics || initialStatistics
+  })
 
   useEffect(() => {
     localStorage.setItem('statistics', JSON.stringify(statistics))
