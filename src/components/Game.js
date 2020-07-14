@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Option from './Option'
 
@@ -19,13 +19,21 @@ function Game() {
   const [outcome, setOutcome] = useState('')
   const [computersChoice, setComputersChoice] = useState('')
   const [playersChoice, setPlayersChoice] = useState('')
+  const [statistics, setStatistics] = useState(() => {
+    const initialStatistics = {
+      [Outcomes.WIN]: 0,
+      [Outcomes.LOSE]: 0,
+      [Outcomes.DRAW]: 0,
+    }
+    const storedStatistics = JSON.parse(localStorage.getItem('statistics'))
 
-  const initialStatistics = {
-    [Outcomes.WIN]: 0,
-    [Outcomes.LOSE]: 0,
-    [Outcomes.DRAW]: 0,
-  }
-  const [statistics, setStatistics] = useState(initialStatistics)
+    return storedStatistics || initialStatistics
+  })
+
+  useEffect(() => {
+    localStorage.setItem('statistics', JSON.stringify(statistics))
+  }, [statistics])
+
   const total =
     statistics[Outcomes.WIN] + statistics[Outcomes.LOSE] + statistics[Outcomes.DRAW]
 
@@ -35,8 +43,6 @@ function Game() {
   }
 
   function decideOutcome(player, computer) {
-    // console.log(player, computer)
-
     if (player === computer) {
       return Outcomes.DRAW
     } else if (
@@ -60,7 +66,7 @@ function Game() {
 
     setStatistics((prev) => ({
       ...prev,
-      [result]: prev[result] + 1,
+      [result]: statistics[result] + 1,
     }))
 
     setIsGameRunning(true)
@@ -103,9 +109,9 @@ function Game() {
       {/* statistics */}
       <div>
         <h3>Statistics</h3>
-        <p>win: {statistics[Outcomes.WIN]}</p>
-        <p>lose: {statistics[Outcomes.LOSE]}</p>
-        <p>draw: {statistics[Outcomes.DRAW]}</p>
+        <p>won: {statistics[Outcomes.WIN]}</p>
+        <p>lost: {statistics[Outcomes.LOSE]}</p>
+        <p>"meh": {statistics[Outcomes.DRAW]}</p>
         <br />
         <p>total: {total}</p>
       </div>
