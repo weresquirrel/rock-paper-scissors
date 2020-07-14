@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 import Option from './Option'
 
@@ -19,18 +19,23 @@ function Game() {
   const [outcome, setOutcome] = useState('')
   const [computersChoice, setComputersChoice] = useState('')
   const [playersChoice, setPlayersChoice] = useState('')
+  const [statistics, setStatistics] = useState({})
 
-  // Reach Info
-  localStorage.setItem(Outcomes.WIN, (localStorage.getItem(Outcomes.WIN) || 0))
-  localStorage.setItem(Outcomes.LOSE, (localStorage.getItem(Outcomes.LOSE) || 0))
-  localStorage.setItem(Outcomes.DRAW, (localStorage.getItem(Outcomes.DRAW) || 0))
+  useEffect(() => {
+    const initialStatistics = {
+      [Outcomes.WIN]: 0, 
+      [Outcomes.LOSE]: 0, 
+      [Outcomes.DRAW]: 0
+    }
+    const storedStatistics = JSON.parse(localStorage.getItem('statistics'))
 
-  // Get Info
-  const statistics = {
-    [Outcomes.WIN]: parseInt(localStorage.getItem(Outcomes.WIN)), 
-    [Outcomes.LOSE]: parseInt(localStorage.getItem(Outcomes.LOSE)), 
-    [Outcomes.DRAW]: parseInt(localStorage.getItem(Outcomes.DRAW))
-  }
+    setStatistics(storedStatistics || initialStatistics)
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('statistics', JSON.stringify(statistics))
+  }, [statistics])
+
   const total = statistics[Outcomes.WIN] + statistics[Outcomes.LOSE] + statistics[Outcomes.DRAW]
 
   function pickRandomChoice(options) {
@@ -39,8 +44,6 @@ function Game() {
   }
 
   function decideOutcome(player, computer) {
-    // console.log(player, computer)
-
     if(player === computer) {
       return Outcomes.DRAW
     } else if (
@@ -62,7 +65,10 @@ function Game() {
     setComputersChoice(computer)
     setOutcome(result)
 
-    localStorage.setItem(result, statistics[result] + 1)
+    setStatistics(prev => ({
+      ...prev,
+      [result]: statistics[result] + 1
+    }))
 
     setIsGameRunning(true) 
   }
