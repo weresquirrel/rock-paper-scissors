@@ -1,0 +1,21 @@
+{
+  "configurations": [
+    {
+      "type": "firefox",
+      "request": "launch",
+      "reAttach": true,
+      "name": "Launch Firefox localhost:3000",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "userDataDir": "~/.config/chromium-vscode-debug",
+      "runtimeExecutable": "/snap/bin/chromium",
+      "name": "Launch Chrome localhost:3000",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}
