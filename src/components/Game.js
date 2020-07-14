@@ -1,17 +1,17 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 
 import Option from './Option'
 
 const Signs = {
   ROCK: 'rock',
   PAPER: 'paper',
-  SCISSORS: 'scissors'
+  SCISSORS: 'scissors',
 }
 
 const Outcomes = {
   WIN: 'win',
   LOSE: 'lose',
-  DRAW: 'draw'
+  DRAW: 'draw',
 }
 
 function Game() {
@@ -19,11 +19,11 @@ function Game() {
   const [outcome, setOutcome] = useState('')
   const [computersChoice, setComputersChoice] = useState('')
   const [playersChoice, setPlayersChoice] = useState('')
-  const [statistics, setStatistics] = useState(()=> {
+  const [statistics, setStatistics] = useState(() => {
     const initialStatistics = {
-      [Outcomes.WIN]: 0, 
-      [Outcomes.LOSE]: 0, 
-      [Outcomes.DRAW]: 0
+      [Outcomes.WIN]: 0,
+      [Outcomes.LOSE]: 0,
+      [Outcomes.DRAW]: 0,
     }
     const storedStatistics = JSON.parse(localStorage.getItem('statistics'))
 
@@ -34,7 +34,8 @@ function Game() {
     localStorage.setItem('statistics', JSON.stringify(statistics))
   }, [statistics])
 
-  const total = statistics[Outcomes.WIN] + statistics[Outcomes.LOSE] + statistics[Outcomes.DRAW]
+  const total =
+    statistics[Outcomes.WIN] + statistics[Outcomes.LOSE] + statistics[Outcomes.DRAW]
 
   function pickRandomChoice(options) {
     const keys = Object.keys(options)
@@ -42,13 +43,13 @@ function Game() {
   }
 
   function decideOutcome(player, computer) {
-    if(player === computer) {
+    if (player === computer) {
       return Outcomes.DRAW
     } else if (
-        (player === Signs.ROCK && computer === Signs.PAPER) ||
-        (player === Signs.PAPER && computer === Signs.SCISSORS) ||
-        (player === Signs.SCISSORS && computer === Signs.ROCK)
-      ) {
+      (player === Signs.ROCK && computer === Signs.PAPER) ||
+      (player === Signs.PAPER && computer === Signs.SCISSORS) ||
+      (player === Signs.SCISSORS && computer === Signs.ROCK)
+    ) {
       return Outcomes.LOSE
     } else {
       return Outcomes.WIN
@@ -63,12 +64,12 @@ function Game() {
     setComputersChoice(computer)
     setOutcome(result)
 
-    setStatistics(prev => ({
+    setStatistics((prev) => ({
       ...prev,
-      [result]: statistics[result] + 1
+      [result]: statistics[result] + 1,
     }))
 
-    setIsGameRunning(true) 
+    setIsGameRunning(true)
   }
 
   function newGame() {
@@ -83,31 +84,27 @@ function Game() {
       {/* Computer's choice */}
       <div>
         <p>Computer's choice:</p>
-        <p>
-          {computersChoice ? computersChoice : '???'}
-        </p>
-        
+        <p>{computersChoice ? computersChoice : '???'}</p>
       </div>
 
       {/* Player's choice */}
-      {Object.keys(Signs).map(signKey => 
+      {Object.keys(Signs).map((signKey) => (
         <Option
-          key={`option-${signKey}`} 
-          sign={Signs[signKey]} 
-          onActivate={runGame} 
-          isActivatable={isGameRunning} 
+          key={`option-${signKey}`}
+          sign={Signs[signKey]}
+          onActivate={runGame}
+          isActivatable={isGameRunning}
           activatedChoice={playersChoice}
         />
-      )}
+      ))}
 
       {/* Outcome info + restart */}
-      {isGameRunning ? 
-        <div> 
+      {isGameRunning ? (
+        <div>
           <p>{outcome}</p>
           <button onClick={newGame}>Play again</button>
-        </div> : 
-        null
-      }
+        </div>
+      ) : null}
 
       {/* statistics */}
       <div>
@@ -115,10 +112,9 @@ function Game() {
         <p>won: {statistics[Outcomes.WIN]}</p>
         <p>lost: {statistics[Outcomes.LOSE]}</p>
         <p>"meh": {statistics[Outcomes.DRAW]}</p>
-        <br/>
+        <br />
         <p>total: {total}</p>
       </div>
-
     </div>
   )
 }
