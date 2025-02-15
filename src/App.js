@@ -1,30 +1,24 @@
 import React, { useEffect, useState } from 'react'
-import * as firebase from 'firebase/app'
-import 'firebase/auth'
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 
 import './App.css'
 import Game from './components/Game'
 
-const provider = new firebase.auth.GoogleAuthProvider()
-
-const Login = () => {
+const Login = ({ auth, provider }) => {
   const onLogin = () => {
-    firebase
-      .auth()
-      .signInWithPopup(provider)
-      .catch((error) => console.log(`Login error: ${error}`))
+    signInWithPopup(auth, provider).catch((error) => console.log(`Login error: ${error}`))
   }
 
   return <button onClick={onLogin}>Login</button>
 }
 
-const Logout = ({ user }) => {
+const Logout = ({ user, auth }) => {
   return (
     <>
       <p>{user.displayName}</p>
       <button
         onClick={() => {
-          firebase.auth().signOut()
+          auth.signOut()
         }}
       >
         Log out
@@ -33,12 +27,16 @@ const Logout = ({ user }) => {
   )
 }
 
-function App() {
+function App({ firebaseApp }) {
+  const auth = getAuth(firebaseApp)
+
+  const provider = new GoogleAuthProvider()
+
   const [user, setUser] = useState('no info')
 
   useEffect(() => {
-    firebase.auth().onAuthStateChanged((u) => setUser(u))
-  }, [])
+    auth.onAuthStateChanged((u) => setUser(u))
+  }, [auth])
 
   return (
     <div className="App">
@@ -49,9 +47,9 @@ function App() {
         {user === 'no info' ? (
           <p>loading...</p>
         ) : user === null ? (
-          <Login />
+          <Login auth={auth} provider={provider} />
         ) : (
-          <Logout user={user} />
+          <Logout auth={auth} user={user} />
         )}
         <Game />
       </main>
